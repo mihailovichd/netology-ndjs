@@ -11,17 +11,17 @@ const maxRangeNumber = Math.round(Math.random() * (MAX_NUMBER - minRangeNumber) 
 const number =  Math.round(Math.random() * (maxRangeNumber - minRangeNumber) + minRangeNumber);
 
 const rl = readline.createInterface({input, output})
-const writeQuestion = (text) => {
+const askQuestion = (text) => {
     rl.question(text, (answer) => {
         answer = +answer
         if (answer == number) {
             console.log("Победа!")
             rl.close()
         } else if (answer > number) {
-            writeQuestion("Меньше")
+            askQuestion("Меньше")
         } else if (answer < number) {
-            writeQuestion("Больше")
+            askQuestion("Больше")
         }
     })
 }
-writeQuestion(`Загадано число от ${minRangeNumber} до ${maxRangeNumber}`)
+askQuestion(`Загадано число от ${minRangeNumber} до ${maxRangeNumber}`)
