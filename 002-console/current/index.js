@@ -1,49 +1,65 @@
 #!/usr/bin/env node
-
 const yargs = require("yargs/yargs")
 const { hideBin } = require("yargs/helpers")
-const time = new Date()
 
-const options = {
+const currentDate = new Date()
+
+const commandsOptions = {
     "year": {
         alias: "y",
-        def: time.getFullYear,
+        def: {
+            get: () => currentDate.getFullYear(),
+            set: (value) => currentDate.setFullYear(value)
+        },
     },
     "month": {
         alias: "m",
+        def: {
+            get: () => currentDate.getMonth() + 1,
+            set: (value) => currentDate.setMonth(value)
+        },
     },
     "date": {
-        alias: "d"
+        alias: "d",
+        def: {
+            get: () => currentDate.getDate(),
+            set: (value) => currentDate.setDate(value)
+        },
     }
 }
 
-function contains(argv) {
-    return Object.keys(options).filter(option => argv[option])
+const getParam = (argv) => {
+    const contains = Object.keys(commandsOptions).filter(option => argv[option])
+    if (contains.length > 0) {
+        return contains[0]
+    }
 }
 
-function callDef(argv) {
-
+const manageDate = (argv, operation) => {
+    const param = getParam(argv)
+    const def = commandsOptions[getParam(argv)].def
+    if (def) {
+        const result = def.set(eval(def.get() + operation + argv[param]))
+        console.log(currentDate)
+    }
 }
 
 const argv = yargs(hideBin(process.argv))
     .command("current", "current time",
         () => {},
         (argv) => {
-
+            const param = getParam(argv)
+            console.log(param ? commandsOptions[param].def.get() : currentDate)
         })
     .command("add", "add to current time",
         () => {},
         (argv) => {
-            if (argv.year) {
-                time.setFullYear(time.getFullYear() + argv.year)
-            } else if (argv.month) {
-                time.setMonth(time.getMonth() + argv.month)
-            } else if (argv.date) {
-                time.setDate(time.getDate() + argv.date)
-            }
-            console.log(time)
+            manageDate(argv, "+")
         })
-    .options(options)
+    .command("sub", "sub from current time",
+        () => {},
+        (argv) => {
+            manageDate(argv, "-")
+        })
+    .options(commandsOptions)
     .argv
-
-console.log(argv)

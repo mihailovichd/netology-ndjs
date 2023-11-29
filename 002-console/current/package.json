@@ -13,6 +13,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "displaydate": "^1.1.0",
     "yargs": "^17.7.2"
   }
 }
