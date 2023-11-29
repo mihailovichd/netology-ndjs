@@ -3,24 +3,22 @@
 const readline = require("readline")
 const { stdin: input, stdout: output } = require("process")
 
-const start = readline.createInterface({ input, output })
-const number = Math.round(Math.random() * 100)
+const minNumber = Math.round(Math.random() * 100)
+const maxNumber = Math.round(Math.random() * (100 - minNumber) + minNumber);
+const number =  Math.round(Math.random() * (maxNumber - minNumber) + minNumber);
 
-function question(text) {
+const start = readline.createInterface({input, output})
+const writeQuestion = (text) => {
     start.question(text, (answer) => {
-        game(+answer)
+        answer = +answer
+        if (answer == number) {
+            console.log("Победа!")
+            start.close()
+        } else if (answer > number) {
+            writeQuestion("Меньше")
+        } else if (answer < number) {
+            writeQuestion("Больше")
+        }
     })
 }
-
-function game(answer) {
-    if (answer == number) {
-        console.log("Победа!")
-        start.close()
-    } else if (answer > number) {
-        question("Меньше")
-    } else if (answer < number) {
-        question("Больше")
-    }
-}
-
-question("Загадано число от 0 до 100")
+writeQuestion(`Загадано число от ${minNumber} до ${maxNumber}`)
