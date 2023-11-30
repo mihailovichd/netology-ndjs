@@ -4,62 +4,71 @@ const { hideBin } = require("yargs/helpers")
 
 const currentDate = new Date()
 
-const commandsOptions = {
-    "year": {
+const commandOptions = {
+    year: {
         alias: "y",
-        def: {
+        func: {
             get: () => currentDate.getFullYear(),
             set: (value) => currentDate.setFullYear(value)
-        },
+        }
     },
-    "month": {
+
+    month: {
         alias: "m",
-        def: {
+        func: {
             get: () => currentDate.getMonth() + 1,
-            set: (value) => currentDate.setMonth(value)
+            set: (value) => currentDate.setMonth(value - 1),
         },
     },
-    "date": {
+
+    day: {
         alias: "d",
-        def: {
+        func: {
             get: () => currentDate.getDate(),
-            set: (value) => currentDate.setDate(value)
+            set: (value) => currentDate.setDate(value),
         },
     }
 }
 
-const getParam = (argv) => {
-    const contains = Object.keys(commandsOptions).filter(option => argv[option])
-    if (contains.length > 0) {
-        return contains[0]
+const GET_OPERATION = 0
+const ADD_OPERATION = 1
+const SUB_OPERATION = 2
+
+const getOperationResultWithOption = (argv, operation) => {
+    const option = Object.keys(commandOptions).find(option => argv[option])
+    if (!option) return currentDate
+
+    const func = commandOptions[option].func
+    const optionValue = func.get()
+
+    switch (operation) {
+        case GET_OPERATION:
+            return optionValue
+        case ADD_OPERATION:
+            func.set(optionValue + argv[option])
+            break
+        case SUB_OPERATION:
+            func.set(optionValue - argv[option])
+            break
     }
+    return currentDate
 }
 
-const manageDate = (argv, operation) => {
-    const param = getParam(argv)
-    const def = commandsOptions[getParam(argv)].def
-    if (def) {
-        const result = def.set(eval(def.get() + operation + argv[param]))
-        console.log(currentDate)
-    }
-}
-
-const argv = yargs(hideBin(process.argv))
+yargs(hideBin(process.argv))
     .command("current", "current time",
         () => {},
         (argv) => {
-            const param = getParam(argv)
-            console.log(param ? commandsOptions[param].def.get() : currentDate)
+            console.log(getOperationResultWithOption(argv, GET_OPERATION))
         })
     .command("add", "add to current time",
         () => {},
         (argv) => {
-            manageDate(argv, "+")
+            console.log(getOperationResultWithOption(argv, ADD_OPERATION))
         })
     .command("sub", "sub from current time",
         () => {},
         (argv) => {
-            manageDate(argv, "-")
+            console.log(getOperationResultWithOption(argv, SUB_OPERATION))
         })
-    .options(commandsOptions)
+    .options(commandOptions)
     .argv
