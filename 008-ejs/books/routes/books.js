@@ -1,7 +1,5 @@
 const express = require('express')
 const router = express.Router()
-const fileMulter = require('../middleware/files')
-const path = require('path')
 const { v4: uuid } = require('uuid')
 
 class Book {
