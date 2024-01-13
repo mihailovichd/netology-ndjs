@@ -1,0 +1,8 @@
+docker pull node:15.14
+docker run --name first_node -d -v /var/first/data:/data node:15.14
+docker run --name second_node -d -v /var/second/data:/data node:15.14
+docker exec -d first_node touch test.txt
+docker exec first_second cat test1.txt
+docker rm first_node -f
+docker rm second_node -f
+docker rmi node:15.14

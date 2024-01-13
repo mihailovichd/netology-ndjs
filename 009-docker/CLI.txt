@@ -1,0 +1,10 @@
+docker pull busybox
+docker run --name pinger -it busybox ping netology.ru -c 7
+docker ps -a
+docker logs pinger
+docker start pinger
+docker ps -a
+docker logs pinger
+7 packets transmitted, 7 packets received, 0% packet loss
+docker rm pinger
+docker rmi busybox
