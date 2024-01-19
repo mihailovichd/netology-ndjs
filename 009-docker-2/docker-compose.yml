@@ -1,0 +1,23 @@
+services:
+  storage:
+    image: redis
+
+  books:
+    image: node
+    volumes:
+      - ./books/:/app
+    working_dir: /app
+    ports:
+      - 80:3000
+    depends_on:
+      - counter
+    command: npm run dev
+
+  counter:
+    image: node
+    volumes:
+      - ./counter/:/app2
+    working_dir: /app2
+    ports:
+      - 3001:3001
+    command: npm run dev
