@@ -4,7 +4,15 @@ const userModel = require('../models/users')
 const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy
 
-const verify = async(username, password, cb) => {
+const options = {
+    usernameField: 'username',
+    passwordField: 'password'
+}
+
+passport.use('local', new LocalStrategy({
+    usernameField: 'username',
+    passwordField: 'password'
+}, async(username, password, cb) => {
     try {
         const user = await userModel.findOne({ username: username }).select('-__v')
 
@@ -20,22 +28,15 @@ const verify = async(username, password, cb) => {
     } catch (e) {
         console.log(e)
     }
-}
-
-const options = {
-    usernameField: 'username',
-    passwordField: 'password'
-}
-
-passport.use('local', new LocalStrategy(options, verify))
+}))
 
 passport.serializeUser((user, cb) => {
     cb(null, user._id)
 })
 
-passport.deserializeUser(async(_id, cb) => {
+passport.deserializeUser(async(id, cb) => {
     try {
-        const user = await userModel.findById(_id)
+        const user = await userModel.findById(id)
         cb(null, user)
     } catch (e) {
         console.log(e)
