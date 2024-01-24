@@ -20,11 +20,12 @@ services:
       ME_CONFIG_MONGODB_URL: mongodb://root:example@mongo:27017/
 
   practical-work:
-    build: ./
+    image: node
     ports:
       - 80:3000
     volumes:
       - ./:/app
+    working_dir: /app
     environment:
       - PORT=3000
       - DBURL=mongodb://root:example@mongo:27017/

@@ -6,7 +6,7 @@ const User = new Schema({
         type: String
     },
 
-    password: {
+    passwordHash: {
         require: true,
         type: String
     },
@@ -22,10 +22,10 @@ const User = new Schema({
     }
 })
 
-const userModel = model('user', User)
-
-User.methods.findByEmail = async(email) => {
-    return userModel.findOne({ email: email }).select('-__v')
+User.statics.findByEmail = async(email) => {
+    return userModel.findOne({ email: email })
 }
+
+const userModel = model('user', User)
 
 module.exports = userModel
