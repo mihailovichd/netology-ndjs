@@ -16,6 +16,7 @@ passport.deserializeUser( async (id, cb) => {
         cb(null, user)
     } catch (e) {
         console.log(e)
+        cb(e)
     }
 })
 
@@ -38,35 +39,29 @@ passport.use('local', new LocalStrategy({
     }
 }))
 
-router.post('/signup',
-    async(req, res, next) => {
-        const { email } = req.body
-        try {
-            if (await userModel.findByEmail(email)) {
-                return res.json({ status: false, msg: 'email занят' })
-            }
-            next()
-        } catch (e) {
-            console.log(e)
-        }
-    },
-
-    async(req, res) => {
-        const { email, password, name, contactPhone } = req.body
-        const user = await userModel.create({
+router.post('/signup', async(req, res, next) => {
+    const { email, password, name, contactPhone } = req.body
+    try {
+        res.result = await userModel.create({
             email: email,
             passwordHash: hashString(password),
             name: name,
             contactPhone: contactPhone
         })
-        res.json(user)
+        res.status(200)
+    } catch (e) {
+        res.result = e.code === 11000 ? 'email is busy' : e.message
+        res.status(500)
     }
-)
+    next()
+})
 
 router.post('/signin',
     passport.authenticate('local'),
-    (req, res) => {
-        res.json(req.user)
+    (req, res, next) => {
+        res.result = req.user
+        res.status(200)
+        next()
     }
 )
 
