@@ -3,6 +3,7 @@ const router = express.Router()
 const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy
 const crypto = require('crypto')
+const getStandardResponse = require('../../middleware/response')
 
 const userModel = require('../../models/user')
 
@@ -39,29 +40,24 @@ passport.use('local', new LocalStrategy({
     }
 }))
 
-router.post('/signup', async(req, res, next) => {
+router.post('/signup', async(req, res) => {
     const { email, password, name, contactPhone } = req.body
     try {
-        res.result = await userModel.create({
+        res.data(200, await userModel.create({
             email: email,
             passwordHash: hashString(password),
             name: name,
             contactPhone: contactPhone
-        })
-        res.status(200)
+        }))
     } catch (e) {
-        res.result = e.code === 11000 ? 'email is busy' : e.message
-        res.status(500)
+        res.data(400, e.code === 11000 ? 'email is busy' : e.message)
     }
-    next()
 })
 
 router.post('/signin',
     passport.authenticate('local'),
-    (req, res, next) => {
-        res.result = req.user
-        res.status(200)
-        next()
+    (req, res) => {
+        res.data(200, req.user)
     }
 )
 

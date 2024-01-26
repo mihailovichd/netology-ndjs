@@ -2,6 +2,7 @@ const express = require('express')
 const mongoose = require('mongoose')
 const session = require('express-session')
 const passport = require('passport')
+const path = require('path')
 
 const apiRoute = require('./routes/api/index')
 
@@ -13,15 +14,6 @@ app.use(passport.initialize())
 app.use(passport.session())
 
 app.use('/api', apiRoute)
-
-app.use((req, res) => {
-    const isSuccess = res.statusCode === 200
-    const result = {
-        status: isSuccess ? 'ok' : 'false',
-    }
-    result[isSuccess ? 'data' : 'error'] = res.result
-    res.json(result)
-})
 
 const start = async(port, dbUrl, dbName) => {
     try {
