@@ -39,17 +39,18 @@ const Advertisements = new Schema({
     }
 })
 
-Advertisements.statics.remove = async(id) => {
-    return advertisementsModel.deleteOne({ _id: id })
+Advertisements.statics.removeById = async(id) => {
+    console.log(id)
+    return advertisementsModel.findByIdAndUpdate(id,{ isDeleted: true })
 }
 
-Advertisements.statics.find = async(params) => {
+Advertisements.statics.findByParams = async(params) => {
     const { shortText, description, userId, tags } = params
-    return advertisementsModel.findOne({
-        shortText: shortText,
-        description: description,
-        userId: userId,
-        tags: tags,
+    return advertisementsModel.find({
+        [shortText ? 'shortText' : null]: { '$regex': shortText },
+        [description ? 'description' : null]: { '$regex': description },
+        [userId ? 'userId' : null]: userId,
+        [tags ? 'tags': null]: tags,
         isDeleted: false
     })
 }

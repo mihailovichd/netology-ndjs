@@ -1,12 +1,15 @@
 const express = require('express')
 const router = express.Router()
-const advertisementsModel = require('../../models/advertisements')
-const fileMulter = require('../../middleware/files')
 const passport = require("passport")
+
+const advertisementsModel = require('../../models/advertisements')
+
+const fileMulter = require('../../middleware/files')
+const authMiddleware = require('../../middleware/auth')
 
 router.get('/', async(req, res) => {
     try {
-        res.data(200, await advertisementsModel.find({}))
+        res.data(200, await advertisementsModel.findByParams({}))
     } catch (e) {
         res.data(400, e.message)
     }
@@ -15,19 +18,14 @@ router.get('/', async(req, res) => {
 router.get('/:id', async(req, res) => {
     const { id } = req.params
     try {
-        res.data(200, await advertisementsModel.find({ _id: id }))
+        res.data(200, await advertisementsModel.findById(id))
     } catch (e) {
         res.data(400, e.message)
     }
 })
 
 router.post('/',
-    (req, res, next) => {
-        if (!req.isAuthenticated()) {
-            return res.data(400, 'Please login')
-        }
-        next()
-    },
+    authMiddleware,
     fileMulter.array('images'),
     async(req, res) => {
         const { shortText, description } = req.body
@@ -42,6 +40,18 @@ router.post('/',
                 updatedAt: Date.now(),
                 userId: req.user.id
             }))
+        } catch (e) {
+            res.data(400, e.message)
+        }
+    }
+)
+
+router.delete('/:id',
+    authMiddleware,
+    async (req, res) => {
+        const { id } = req.params
+        try {
+            res.data(200, await advertisementsModel.removeById(id))
         } catch (e) {
             res.data(400, e.message)
         }
