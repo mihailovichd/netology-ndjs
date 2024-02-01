@@ -6,5 +6,11 @@ module.exports = (req, res, next) => {
             [isSuccess ? 'data' : 'error']: data
         })
     }
+
+    res.codes = {
+        success: 200,
+        error: 404
+    }
+
     next()
 }

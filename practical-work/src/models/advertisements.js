@@ -1,6 +1,6 @@
 const { model, Schema, ObjectId } = require('mongoose')
 
-const Advertisements = new Schema({
+const advertisementsSchema = new Schema({
     shortText: {
         type: String,
         required: true
@@ -39,14 +39,12 @@ const Advertisements = new Schema({
     }
 })
 
-Advertisements.statics.removeById = async(id) => {
-    console.log(id)
-    return advertisementsModel.findByIdAndUpdate(id,{ isDeleted: true })
+advertisementsSchema.statics.removeById = function(id) {
+    return this.findByIdAndUpdate(id, { isDeleted: true })
 }
 
-Advertisements.statics.findByParams = async(params) => {
-    const { shortText, description, userId, tags } = params
-    return advertisementsModel.find({
+advertisementsSchema.statics.findByParams = function({ shortText, description, userId, tags }) {
+    return this.find({
         [shortText ? 'shortText' : null]: { '$regex': shortText },
         [description ? 'description' : null]: { '$regex': description },
         [userId ? 'userId' : null]: userId,
@@ -55,6 +53,4 @@ Advertisements.statics.findByParams = async(params) => {
     })
 }
 
-const advertisementsModel = model('advertisements', Advertisements)
-
-module.exports = advertisementsModel
+module.exports = model('advertisements', advertisementsSchema)

@@ -1,6 +1,6 @@
 const { model, Schema } = require('mongoose')
 
-const User = new Schema({
+const userSchema = new Schema({
     email: {
         require: true,
         type: String,
@@ -23,10 +23,8 @@ const User = new Schema({
     }
 })
 
-User.statics.findByEmail = async(email) => {
-    return userModel.findOne({ email: email })
+userSchema.statics.findByEmail = function(email) {
+    return this.findOne({ email: email })
 }
 
-const userModel = model('user', User)
-
-module.exports = userModel
+module.exports = model('user', userSchema)

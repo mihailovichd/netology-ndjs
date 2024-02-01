@@ -1,26 +1,25 @@
 const express = require('express')
 const router = express.Router()
-const passport = require("passport")
 
-const advertisementsModel = require('../../models/advertisements')
+const Advertisements = require('../../models/advertisements')
 
 const fileMulter = require('../../middleware/files')
 const authMiddleware = require('../../middleware/auth')
 
 router.get('/', async(req, res) => {
     try {
-        res.data(200, await advertisementsModel.findByParams({}))
+        res.data(res.codes.success, await Advertisements.findByParams({}))
     } catch (e) {
-        res.data(400, e.message)
+        res.data(res.codes.error, e.message)
     }
 })
 
 router.get('/:id', async(req, res) => {
     const { id } = req.params
     try {
-        res.data(200, await advertisementsModel.findById(id))
+        res.data(res.codes.success, await Advertisements.findById(id))
     } catch (e) {
-        res.data(400, e.message)
+        res.data(res.codes.error, e.message)
     }
 })
 
@@ -31,7 +30,7 @@ router.post('/',
         const { shortText, description } = req.body
         const images = req.files
         try {
-            res.data(200, await advertisementsModel.create({
+            res.data(res.codes.success, await Advertisements.create({
                 shortText: shortText,
                 description: description,
                 images: images,
@@ -41,7 +40,7 @@ router.post('/',
                 userId: req.user.id
             }))
         } catch (e) {
-            res.data(400, e.message)
+            res.data(res.codes.error, e.message)
         }
     }
 )
@@ -51,9 +50,9 @@ router.delete('/:id',
     async (req, res) => {
         const { id } = req.params
         try {
-            res.data(200, await advertisementsModel.removeById(id))
+            res.data(res.codes.success, await Advertisements.removeById(id))
         } catch (e) {
-            res.data(400, e.message)
+            res.data(res.codes.error, e.message)
         }
     }
 )

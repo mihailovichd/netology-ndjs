@@ -3,11 +3,13 @@ const router = express.Router()
 
 const responseMiddleware = require("../../middleware/response");
 
-const authRoute = require('./auth')
+const usersRoute = require('./user')
 const advertisementsRoute = require('./advertisements')
+const chatRoute = require('./chat')
 
 router.use(responseMiddleware)
-router.use('/', authRoute)
+router.use('/', usersRoute)
 router.use('/advertisements', advertisementsRoute)
+router.use('/chat', chatRoute)
 
 module.exports = router
