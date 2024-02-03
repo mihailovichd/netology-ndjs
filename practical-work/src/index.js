@@ -4,6 +4,7 @@ const session = require('express-session')
 const passport = require('passport')
 const path = require('path')
 const http = require('http')
+const socketIO = require('socket.io')
 
 const apiRoute = require('./routes/api/index')
 
@@ -45,7 +46,5 @@ const start = async(port, dbUrl, dbName) => {
     }
 }
 
-const PORT = process.env.PORT || 3000
-const DBURL = process.env.DBURL
-const DBNAME = process.env.DBNAME
-start(PORT, DBURL, DBNAME)
+const { PORT, DB_URL, DB_NAME } = process.env
+start(PORT | 3000, DB_URL, DB_NAME)

@@ -4,7 +4,7 @@ const router = express.Router()
 const Advertisements = require('../../models/advertisements')
 
 const fileMulter = require('../../middleware/files')
-const authMiddleware = require('../../middleware/auth')
+const authMiddleware = require('../../middleware/user')
 
 router.get('/', async(req, res) => {
     try {

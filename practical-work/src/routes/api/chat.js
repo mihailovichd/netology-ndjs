@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 
 const Chat = require('../../models/chat')
-const authMiddleware = require('../../middleware/auth')
+const authMiddleware = require('../../middleware/user')
 
 router.post('/send',
     authMiddleware,
