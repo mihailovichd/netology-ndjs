@@ -65,4 +65,5 @@ module.exports = (io) => (req, res, next) => {
             console.log(`Socket disconnected: ${id}`)
         })
     })
+    next()
 }
