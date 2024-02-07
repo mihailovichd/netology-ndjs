@@ -1,6 +1,7 @@
 const { model, Schema } = require('mongoose')
 const Message = require('./message')
 
+const subscribers = []
 const chatSchema = new Schema({
     users: {
         type: Array,
@@ -33,6 +34,8 @@ chatSchema.statics.sendMessage = async function ({ author, receiver, text }) {
             await this.create({ users, createdAt: Date.now(), messages: [newMessage._id] })
         }
 
+        subscribers.forEach(func => func(newMessage))
+
         return newMessage
     } catch (e) {
         console.log(e)
@@ -43,8 +46,13 @@ chatSchema.statics.getHistory = async function (id) {
     return this.findById(id)
 }
 
-chatSchema.statics.subscribe = function (cb) {
-    
+chatSchema.statics.subscribe = (cb) => {
+    subscribers.push(cb)
+    return subscribers.length
+}
+
+chatSchema.statics.unSubscribe = (idx) => {
+    return subscribers.splice(idx, 1)
 }
 
 module.exports = model('chat', chatSchema)
