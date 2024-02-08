@@ -6,7 +6,7 @@ const errorMiddleware = require('../../middleware/error')
 
 const usersRoute = require('./user')
 const advertisementsRoute = require('./advertisements')
-const chatRoute = require('./chat')
+const { router: chatRoute } = require('./chat')
 
 router.use(responseMiddleware)
 router.use('/', usersRoute)
