@@ -1,4 +1,5 @@
-import * as booksModel from './models/books'
+import booksModel from './models/books'
+// TS7016: Нельзя импортировать JS-file
 
 interface Book {
     id: string,
@@ -13,7 +14,7 @@ interface Book {
 abstract class BookRepository {
     async createBook(book: Book) {
         try {
-            await book.save()
+            await booksModel.create(book)
         } catch (e) {
             console.log(e)
         }
