@@ -23,7 +23,7 @@ router.get('/', async (req, res) => {
 })
 
 router.post('/', async (req, res) => {
-    const { title, description, authors, favorite, fileCover, fileName } = req.body
+    const { title = '', description = '', authors = '', favorite = '', fileCover = '', fileName = '' } = {}
 
     const newBook = new booksModel({
         title: title,

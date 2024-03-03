@@ -1,9 +1,10 @@
 const express = require('express')
 const http = require('http')
 const socketIO = require('socket.io')
+const mongoose = require('mongoose')
 
 const bookRouter = require('./routes/books')
-const indexRouter = require('./routes/index');
+const indexRouter = require('./routes');
 
 const app = express()
 const server = http.Server(app)
@@ -33,5 +34,17 @@ io.on('connection', (socket) => {
 app.use('/', indexRouter)
 app.use('/books', bookRouter)
 
-const PORT = process.env.PORT || 3000
-server.listen(PORT)
+const start = async(port, dbUrl) => {
+    try {
+        console.log(port, dbUrl)
+        await mongoose.connect(dbUrl, { dbName: 'books' })
+        server.listen(port, () => {
+            console.log(`Server listens on port ${port}`)
+        })
+    } catch (e) {
+        console.log(e)
+    }
+}
+
+const { PORT, DB_URL } = process.env
+start(PORT || 3000, DB_URL || 'mongodb://localhost:27017/books')
