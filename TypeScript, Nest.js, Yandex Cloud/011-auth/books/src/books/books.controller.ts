@@ -5,18 +5,21 @@ import {
   Param,
   Post,
   Put,
+  UseGuards,
   UsePipes,
 } from '@nestjs/common';
 import { BooksService } from './books.service';
-import { CreateBookDto } from './interfaces/dto/create';
-import { UpdateBookDto } from './interfaces/dto/update';
-import { BookDocument } from '../schemas/book';
-import { IParamId } from './interfaces/param-id';
 import { ValidationPipe } from '../validation/validation.pipe';
-import { updateSchema } from '../validation/schemas/update';
 import { JoiValidationPipe } from '../validation/joi.validation';
+import { BookDocument } from '../schemas/book.schema';
+import { IParamId } from '../interfaces/param-id';
+import { CreateBookDto } from '../interfaces/dto/book.create.dto';
+import { UpdateBookDto } from '../interfaces/dto/book.update.dto';
+import { updateSchema } from '../validation/schemas/book.update.schema';
+import { JwtAuthGuard } from '../auth/jwt.auth.guard';
 
 @Controller('books')
+@UseGuards(JwtAuthGuard)
 export class BooksController {
   constructor(private booksService: BooksService) {}
 

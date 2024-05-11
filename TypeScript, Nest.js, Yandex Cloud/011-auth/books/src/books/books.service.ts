@@ -1,11 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { IBook } from './interfaces/book';
-import { CreateBookDto } from './interfaces/dto/create';
-import { UpdateBookDto } from './interfaces/dto/update';
-import { Book, BookDocument } from '../schemas/book';
-
 import { Model, Connection } from 'mongoose';
 import { InjectModel, InjectConnection } from '@nestjs/mongoose';
+import { CreateBookDto } from '../interfaces/dto/book.create.dto';
+import { Book, BookDocument } from '../schemas/book.schema';
+import { UpdateBookDto } from '../interfaces/dto/book.update.dto';
+import { IBook } from '../interfaces/book.dto';
 
 @Injectable()
 export class BooksService {

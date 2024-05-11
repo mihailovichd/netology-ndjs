@@ -9,24 +9,22 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  // async validateUser(username: string, pass: string): Promise<any> {
-  //     const user = await this.usersService.findOne(username);
-  //     if (user && user.password === pass) {
-  //         const { password, ...result } = user;
-  //         return result;
-  //     }
-  //     return null;
-  // }
-
-  async validateUser(id: number): Promise<any> {
-    const user = await this.usersService.findOne(id);
-    if (user) {
-      return user;
+  async validateUser(email: string, pass: string): Promise<any> {
+    const user = await this.usersService.findOne(email);
+    if (user && user.password == pass) {
+      const { _id, firstName, email } = user;
+      return {
+        access_token: this.jwtService.sign({ id: _id, firstName, email }),
+      };
     }
     return null;
   }
 
-  createToken(payload: any) {
-    return this.jwtService.sign(payload);
+  async validateUserJwt(token: string): Promise<any> {
+    const user = await this.usersService.findById(token);
+    if (user) {
+      return user;
+    }
+    return null;
   }
 }

@@ -1,4 +1,4 @@
-import { IBook } from '../book';
+import { IBook } from '../book.dto';
 
 export interface UpdateBookDto {
   title?: IBook['title'];
