@@ -5,7 +5,7 @@ import { CreateBookDto } from '../interfaces/dto/book.create.dto';
 import { Book, BookDocument } from '../schemas/book.schema';
 import { UpdateBookDto } from '../interfaces/dto/book.update.dto';
 import { IBook } from '../interfaces/book.dto';
-import { UserDocument } from "../schemas/user.schema";
+import { UserDocument } from '../schemas/user.schema';
 
 @Injectable()
 export class BooksService {

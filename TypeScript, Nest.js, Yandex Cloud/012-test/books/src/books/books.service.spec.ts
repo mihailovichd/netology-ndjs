@@ -53,7 +53,9 @@ describe('Books Service (Unit)', () => {
 
   describe('update', () => {
     it('should return updated object', async () => {
-      expect(await booksService.update(mockBookData._id, {})).toEqual(mockBookData);
+      expect(await booksService.update(mockBookData._id, {})).toEqual(
+        mockBookData,
+      );
     });
   });
 });

@@ -1,4 +1,5 @@
 import { IBook } from '../book.dto';
+import { IsString } from 'class-validator';
 
 export interface UpdateBookDto {
   title?: IBook['title'];

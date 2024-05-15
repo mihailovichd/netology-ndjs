@@ -7,4 +7,5 @@ export const updateSchema = Joi.object().keys({
   favorite: Joi.string().optional(),
   fileCover: Joi.string().optional(),
   fileName: Joi.string().optional(),
+  id: Joi.string().optional(),
 });

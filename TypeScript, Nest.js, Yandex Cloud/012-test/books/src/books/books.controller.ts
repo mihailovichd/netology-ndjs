@@ -37,8 +37,8 @@ export class BooksController {
   @UsePipes(new JoiValidationPipe(updateSchema))
   @Put(':id')
   update(
-    @Param() { id }: IParamId,
     @Body() body: UpdateBookDto,
+    @Param() { id }: IParamId,
   ): Promise<BookDocument> {
     return this.booksService.update(id, body);
   }
