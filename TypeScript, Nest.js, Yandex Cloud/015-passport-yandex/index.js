@@ -2,8 +2,8 @@ const express = require('express')
 const passport = require('passport');
 const YandexStrategy = require('passport-yandex').Strategy;
 
-const YANDEX_CLIENT_ID = "93c3a44a75d14a97a68e2cbb9afd6e02";
-const YANDEX_CLIENT_SECRET = "e62de5ca959d4d5cb73a39230d1706a9";
+const YANDEX_CLIENT_ID = "";
+const YANDEX_CLIENT_SECRET = "";
 
 function isAuthenticated(req, res, next) {
     if (req.isAuthenticated()) {
