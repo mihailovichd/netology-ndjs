@@ -4,10 +4,11 @@ import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '@nestjs/config';
-import { HotelModule } from './hotels/hotel.module';
+import { HotelModule } from './hotel/hotel.module';
 import { ReservationModule } from './reservation/reservation.module';
 import { SupportModule } from './support/support.module';
 import { RouterModule } from '@nestjs/core';
+import { ApiHotelModule } from './api/hotel/api.hotel.module';
 
 @Module({
   imports: [
@@ -24,9 +25,10 @@ import { RouterModule } from '@nestjs/core';
     RouterModule.register([
       {
         path: 'api',
-        module: AppModule,
+        module: ApiHotelModule,
       },
     ]),
+    ApiHotelModule,
   ],
   controllers: [AppController],
   providers: [AppService],

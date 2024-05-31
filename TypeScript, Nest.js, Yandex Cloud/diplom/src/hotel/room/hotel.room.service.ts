@@ -6,6 +6,7 @@ import {
 import { InjectModel } from '@nestjs/mongoose';
 import { HotelRoom, HotelRoomDocument } from '../../schemas/hotel.room.schema';
 import { Model } from 'mongoose';
+import { CreateRoomDto } from '../../interfaces/dto/hotel.room.dto';
 
 @Injectable()
 export class HotelRoomService implements IHotelRoomService {
@@ -14,7 +15,7 @@ export class HotelRoomService implements IHotelRoomService {
     private readonly HotelRoomModel: Model<HotelRoomDocument>,
   ) {}
 
-  create(data: Partial<HotelRoom>): Promise<HotelRoom> {
+  create(data: CreateRoomDto): Promise<HotelRoom> {
     const newRoom = new this.HotelRoomModel(data);
     return newRoom.save();
   }
@@ -24,7 +25,8 @@ export class HotelRoomService implements IHotelRoomService {
   }
 
   search(params: SearchRoomsParams): Promise<HotelRoom[]> {
-    return this.HotelRoomModel.find(params);
+    const { offset, limit, hotel } = params;
+    return this.HotelRoomModel.find({ hotel }).limit(limit).skip(offset);
   }
 
   update(id: string, data: Partial<HotelRoom>): Promise<HotelRoom> {

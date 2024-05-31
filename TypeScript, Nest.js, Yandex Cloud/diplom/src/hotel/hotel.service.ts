@@ -7,6 +7,7 @@ import {
   SearchHotelParams,
   UpdateHotelParams,
 } from '../interfaces/hotel.interface';
+import { CreateHotelDto } from '../interfaces/dto/hotel.dto';
 
 @Injectable()
 export class HotelService implements IHotelService {
@@ -14,7 +15,7 @@ export class HotelService implements IHotelService {
     @InjectModel(Hotel.name) private readonly HotelModel: Model<HotelDocument>,
   ) {}
 
-  create(data: any): Promise<Hotel> {
+  create(data: CreateHotelDto): Promise<Hotel> {
     const newHotel = new this.HotelModel(data);
     return newHotel.save();
   }
@@ -24,7 +25,8 @@ export class HotelService implements IHotelService {
   }
 
   search(params: SearchHotelParams): Promise<Hotel[]> {
-    return this.HotelModel.find(params);
+    const { limit, offset, title } = params;
+    return this.HotelModel.find({ title }).skip(offset).limit(limit);
   }
 
   update(id: string, data: UpdateHotelParams): Promise<Hotel> {
