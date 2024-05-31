@@ -10,6 +10,7 @@ import { SupportModule } from './support/support.module';
 import { RouterModule } from '@nestjs/core';
 import { ApiHotelModule } from './api/hotel/api.hotel.module';
 
+// TODO: Interceptors, Pipes, Guards, Exceptions
 @Module({
   imports: [
     ConfigModule.forRoot(),

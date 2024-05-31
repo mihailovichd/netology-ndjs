@@ -11,6 +11,6 @@ export interface IReservationService {
 
 export interface ReservationSearchOptions {
   userId: string;
-  dateStart: Date;
-  dateEnd: Date;
+  dateStart?: Date;
+  dateEnd?: Date;
 }
